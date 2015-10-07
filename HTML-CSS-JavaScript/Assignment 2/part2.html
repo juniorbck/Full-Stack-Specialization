@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Color Guessing Game</title>
+</head>
+
+<body onload="do_game()">
+<script>
+var target;
+var guess_input;
+var guess_count = 0;
+var color = ["Aqua", "Coral", "Gold", "Lime", "Navy", "Olive", "Peru"
+  , "Salmon", "Tomato"];
+
+function do_game() {
+  var target_index = Math.floor(Math.random() * 9);
+  target = color[target_index];
+  alert(target);
+
+  var finished = false;
+  while (!finished) {
+    guess_input = prompt("I am thinking of one of these colors:\n\n"
+      // + "Aqua, Coral, Gold, Lime, Navy, Olive, Peru, Salmon, Tomato.\n\n"
+      + color.join(", ") + ".\n\n"
+      + "What color am I thinking of?");
+    if (guess_input != null) {
+      guess_count++;
+      finished = check_guess();
+    }
+    else
+      break;
+  }
+}
+
+function check_guess()
+{
+  // Convert all strings to lower case, so case does not matter.
+  var lower_case_target = target.toLowerCase();
+  var lower_case_guess_input = guess_input.toLowerCase();
+  var lower_case_color = color.slice();
+  for (var i = 0; i < lower_case_color.length; i++)
+    lower_case_color[i] = color[i].toLowerCase();
+
+  if (lower_case_color.indexOf(lower_case_guess_input) == -1) {
+    alert("Sorry, I don't recognize your color.\n\n"
+      + "Please try again.");
+    return false;
+  }
+  else if (lower_case_guess_input < lower_case_target) {
+    alert("Sorry, your guess is not correct!\n\n"
+      + "Hint: your color is alphabetically lower than mine.\n\n"
+      + "Please try again.");
+    return false;
+  }
+  else if (lower_case_guess_input > lower_case_target) {
+    alert("Sorry, your guess is not correct!\n\n"
+      + "Hint: your color is alphabetically higher than mine.\n\n"
+      + "Please try again.");
+    return false;
+  }
+  else if (lower_case_guess_input == lower_case_target) {
+    myBody = document.getElementsByTagName("body")[0];
+    myBody.style.background = target;
+    var guess_plurality = "guess";
+    if (guess_count > 1)
+      guess_plurality = "guesses";
+    alert("Congratulations! You have guessed the color!\n\n"
+      + "It took you " + guess_count + " " + guess_plurality + " "
+      + "to finish the game!\n\n"
+      + "You can see the color in the background.");
+    return true;
+  }
+}
+</script>
+</body>
+</html>
